@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MK Black Friday Radar</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #030712 0%, #111827 50%, #000000 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        .header {
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 16px;
+            border-bottom: 1px solid #374151;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #DC2626, #991B1B);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .logo-sub {
+            font-size: 10px;
+            color: #9CA3AF;
+        }
+        .login-btn {
+            background: #DC2626;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .hero {
+            padding: 20px 16px;
+            text-align: center;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(220, 38, 38, 0.15);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #EF4444;
+            margin-bottom: 16px;
+        }
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background: #EF4444;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        h1 span {
+            background: linear-gradient(135deg, #EF4444, #F97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            color: #9CA3AF;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .stat {
+            background: rgba(31, 41, 55, 0.8);
+            border: 1px solid #374151;
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 80px;
+        }
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .stat-value.red { color: #EF4444; }
+        .stat-label {
+            font-size: 10px;
+            color: #9CA3AF;
+            margin-top: 2px;
+        }
+        .search-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            flex: 1;
+            background: rgba(31, 41, 55, 0.8);
+            border: 1px solid #374151;
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 15px;
+        }
+        .search-input::placeholder {
+            color: #6B7280;
+        }
+        .search-btn {
+            background: #DC2626;
+            border: none;
+            border-radius: 10px;
+            padding: 0 16px;
+            color: #fff;
+            font-size: 18px;
+        }
+        .categories {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 0 16px 16px;
+            scrollbar-width: none;
+        }
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+        .category {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(31, 41, 55, 0.8);
+            border: 1px solid #374151;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 13px;
+            color: #9CA3AF;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .category.active {
+            background: #DC2626;
+            border-color: #DC2626;
+            color: #fff;
+        }
+        .section-title {
+            padding: 0 16px;
+            margin-bottom: 12px;
+        }
+        .section-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title p {
+            font-size: 13px;
+            color: #9CA3AF;
+            margin-top: 4px;
+        }
+        .deals-grid {
+            padding: 0 16px;
+        }
+        .deal-card {
+            background: rgba(31, 41, 55, 0.9);
+            border: 1px solid #374151;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .deal-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: #1F2937;
+        }
+        .deal-badges {
+            position: relative;
+            margin-top: -180px;
+            height: 180px;
+            pointer-events: none;
+        }
+        .hot-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #DC2626;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .timer-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+        }
+        .store-badge {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 20px 12px 12px;
+            font-size: 12px;
+            color: #D1D5DB;
+        }
+        .deal-content {
+            padding: 16px;
+        }
+        .deal-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .deal-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        .star {
+            color: #FBBF24;
+            font-size: 14px;
+        }
+        .rating-text {
+            font-size: 13px;
+            color: #fff;
+        }
+        .reviews-text {
+            font-size: 12px;
+            color: #6B7280;
+        }
+        .deal-price {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .current-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #EF4444;
+        }
+        .original-price {
+            font-size: 14px;
+            color: #6B7280;
+            text-decoration: line-through;
+        }
+        .discount-pill {
+            background: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .deal-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-primary {
+            flex: 1;
+            background: #DC2626;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .btn-secondary {
+            width: 44px;
+            background: #374151;
+            border: none;
+            border-radius: 10px;
+            color: #9CA3AF;
+            font-size: 16px;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(17, 24, 39, 0.98);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #374151;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            color: #9CA3AF;
+            font-size: 11px;
+        }
+        .nav-item.active {
+            color: #DC2626;
+        }
+        .nav-icon {
+            font-size: 22px;
+        }
+        .hidden { display: none !important; }
+        
+        /* Login Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 200;
+        }
+        .modal-content {
+            background: #1F2937;
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 360px;
+        }
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-input {
+            width: 100%;
+            background: #374151;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+        .form-input::placeholder {
+            color: #9CA3AF;
+        }
+        .form-btn {
+            width: 100%;
+            background: #DC2626;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .form-switch {
+            text-align: center;
+            color: #9CA3AF;
+            font-size: 13px;
+            margin-top: 16px;
+        }
+        .form-switch span {
+            color: #EF4444;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Home Screen -->
+        <div id="home-screen">
+            <div class="header">
+                <div class="header-content">
+                    <div class="logo">
+                        <div class="logo-icon">🔥</div>
+                        <div>
+                            <div class="logo-text">MK Black Friday</div>
+                            <div class="logo-sub">🇲🇰 Северна Македонија</div>
+                        </div>
+                    </div>
+                    <button class="login-btn" onclick="showLogin()">Најави се</button>
+                </div>
+            </div>
+
+            <div class="hero">
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    AI-платформа за пронаоѓање понуди
+                </div>
+                <h1><span>Black Friday</span><br>Radar</h1>
+                <p class="subtitle">Реални цени во денари (MKD) од 1,200+ продавници</p>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">50K+</div>
+                        <div class="stat-label">Активни</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value red">1,200+</div>
+                        <div class="stat-label">Продавници</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">10</div>
+                        <div class="stat-label">AI Агенти</div>
+                    </div>
+                </div>
+
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Пребарај понуди..." id="searchInput">
+                    <button class="search-btn">🔍</button>
+                </div>
+            </div>
+
+            <div class="categories">
+                <div class="category active" data-cat="all">🔥 Сите</div>
+                <div class="category" data-cat="electronics">📱 Електроника</div>
+                <div class="category" data-cat="fashion">👕 Мода</div>
+                <div class="category" data-cat="home">🏠 Домаќинство</div>
+            </div>
+
+            <div class="section-title">
+                <h2>🔥 Врели Понуди</h2>
+                <p>Завршуваат наскоро - побрзај!</p>
+            </div>
+
+            <div class="deals-grid" id="dealsGrid">
+                <!-- Deals will be loaded here -->
+            </div>
+        </div>
+
+        <!-- QR Screen -->
+        <div id="qr-screen" class="hidden">
+            <div class="header">
+                <div class="header-content">
+                    <div class="logo">
+                        <div class="logo-icon">📷</div>
+                        <div class="logo-text">Скенирај QR</div>
+                    </div>
+                </div>
+            </div>
+            <div style="padding: 40px 20px; text-align: center;">
+                <div style="width: 280px; height: 280px; border: 2px dashed #374151; border-radius: 20px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(31, 41, 55, 0.5);">
+                    <div style="font-size: 64px; margin-bottom: 16px;">📷</div>
+                    <div style="color: #9CA3AF; font-size: 16px; font-weight: 600;">Скенирај QR Код</div>
+                    <div style="color: #6B7280; font-size: 13px; margin-top: 8px;">Прикажи го твојот членски код</div>
+                </div>
+                <div id="user-qr-section" class="hidden" style="margin-top: 32px;">
+                    <div style="color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 12px;">Твој Код:</div>
+                    <div style="background: #374151; padding: 16px; border-radius: 12px; display: inline-block;">
+                        <div id="user-qr-code" style="color: #fff; font-family: monospace; font-size: 16px; font-weight: bold;">MKBF-XXXX</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Screen -->
+        <div id="profile-screen" class="hidden">
+            <div class="header">
+                <div class="header-content">
+                    <div class="logo">
+                        <div class="logo-icon">👤</div>
+                        <div class="logo-text">Профил</div>
+                    </div>
+                </div>
+            </div>
+            <div id="profile-content" style="padding: 20px;">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div id="login-modal" class="modal-overlay hidden" onclick="hideLogin(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="modal-title" id="modalTitle">Најави се</div>
+                <div id="register-fields" class="hidden">
+                    <input type="text" class="form-input" placeholder="Име и презиме" id="regName">
+                </div>
+                <input type="email" class="form-input" placeholder="Емаил" id="loginEmail">
+                <input type="password" class="form-input" placeholder="Лозинка" id="loginPassword">
+                <button class="form-btn" onclick="handleAuth()" id="authBtn">Најави се</button>
+                <div class="form-switch">
+                    <span id="authSwitch" onclick="toggleAuth()">Немаш сметка? Регистрирај се</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="showScreen('home')">
+                <span class="nav-icon">🏠</span>
+                <span>Почетна</span>
+            </div>
+            <div class="nav-item" onclick="showScreen('qr')">
+                <span class="nav-icon">📷</span>
+                <span>QR</span>
+            </div>
+            <div class="nav-item" onclick="showScreen('profile')">
+                <span class="nav-icon">👤</span>
+                <span>Профил</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // REAL North Macedonia Deals Data
+        const DEALS_DATA = [
+            {
+                id: "anatolija_001",
+                title: "Apple iPhone 15 Pro Max 256GB Natural Titanium",
+                store: "Анатолија",
+                store_full: "Анатолија (Anatolija)",
+                category: "electronics",
+                brand: "Apple",
+                original_price_mkd: 84990,
+                discount_price_mkd: 72990,
+                discount_percentage: 14,
+                image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-naturaltitanium-select",
+                is_hot: true,
+                ends_in: "02:45:30",
+                rating: 4.9,
+                reviews: 2847,
+                address: "Бул. Јане Сандански 77, Скопје",
+                phone: "02 3210 900"
+            },
+            {
+                id: "neptun_001",
+                title: "Samsung Galaxy S24 Ultra 256GB Titanium Gray",
+                store: "Нептун",
+                store_full: "Нептун (Neptun)",
+                category: "electronics",
+                brand: "Samsung",
+                original_price_mkd: 74990,
+                discount_price_mkd: 64990,
+                discount_percentage: 13,
+                image: "https://images.samsung.com/is/image/samsung/p6pim/mk/2401/gallery/mk-galaxy-s24-ultra-sm-s928bztdgeo",
+                is_hot: true,
+                ends_in: "05:20:15",
+                rating: 4.7,
+                reviews: 1523,
+                address: "Бул. Партизански Одреди, Скопје",
+                phone: "02 3220 300"
+            },
+            {
+                id: "neptun_002",
+                title: "Samsung 55\" OLED S90D 4K Smart TV",
+                store: "Нептун",
+                store_full: "Нептун (Neptun)",
+                category: "electronics",
+                brand: "Samsung",
+                original_price_mkd: 69990,
+                discount_price_mkd: 54990,
+                discount_percentage: 21,
+                image: "https://www.lg.com/mk/images/tvs/md07565051/gallery/medium01.jpg",
+                is_hot: true,
+                ends_in: "12:00:00",
+                rating: 4.8,
+                reviews: 892,
+                address: "Бул. Партизански Одреди, Скопје",
+                phone: "02 3220 300"
+            },
+            {
+                id: "sportvision_001",
+                title: "Nike Air Force 1 '07 White",
+                store: "Спорт Визион",
+                store_full: "Спорт Визион (Sport Vision)",
+                category: "fashion",
+                brand: "Nike",
+                original_price_mkd: 6490,
+                discount_price_mkd: 4990,
+                discount_percentage: 23,
+                image: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/b7d9211c-26e7-431a-ac24-b0540fb3c00f/air-force-1-07",
+                is_hot: true,
+                ends_in: "03:15:00",
+                rating: 4.9,
+                reviews: 567,
+                address: "City Mall, Скопје",
+                phone: "02 3290 111"
+            },
+            {
+                id: "anatolija_003",
+                title: "Sony PlayStation 5 Slim + 2 Игри",
+                store: "Анатолија",
+                store_full: "Анатолија (Anatolija)",
+                category: "electronics",
+                brand: "Sony",
+                original_price_mkd: 34990,
+                discount_price_mkd: 29990,
+                discount_percentage: 14,
+                image: "https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21",
+                is_hot: true,
+                ends_in: "01:30:00",
+                rating: 4.9,
+                reviews: 3421,
+                address: "Бул. Јане Сандански 77, Скопје",
+                phone: "02 3210 900"
+            },
+            {
+                id: "neptun_004",
+                title: "Samsung Galaxy Watch 6 Classic 47mm",
+                store: "Нептун",
+                store_full: "Нептун (Neptun)",
+                category: "electronics",
+                brand: "Samsung",
+                original_price_mkd: 19990,
+                discount_price_mkd: 14990,
+                discount_percentage: 25,
+                image: "https://images.samsung.com/is/image/samsung/p6pim/mk/2307/gallery/mk-galaxy-watch6-classic-r960-sm-r960nzkabbo",
+                is_hot: false,
+                ends_in: "18:45:00",
+                rating: 4.7,
+                reviews: 756,
+                address: "Бул. Партизански Одреди, Скопје",
+                phone: "02 3220 300"
+            }
+        ];
+
+        let currentUser = null;
+        let currentCategory = 'all';
+        let isLoginMode = true;
+
+        function formatMKD(price) {
+            return price.toLocaleString('mk-MK') + ' ден';
+        }
+
+        function renderDeals(deals) {
+            const grid = document.getElementById('dealsGrid');
+            grid.innerHTML = deals.map(deal => `
+                <div class="deal-card">
+                    <img src="${deal.image}" class="deal-image" alt="${deal.title}">
+                    <div class="deal-badges">
+                        ${deal.is_hot ? '<div class="hot-badge">🔥 HOT</div>' : ''}
+                        <div class="timer-badge">⏰ ${deal.ends_in}</div>
+                        <div class="store-badge">🏪 ${deal.store_full}</div>
+                    </div>
+                    <div class="deal-content">
+                        <div class="deal-title">${deal.title}</div>
+                        <div class="deal-rating">
+                            <span class="star">★</span>
+                            <span class="rating-text">${deal.rating}</span>
+                            <span class="reviews-text">(${deal.reviews.toLocaleString()})</span>
+                        </div>
+                        <div class="deal-price">
+                            <span class="current-price">${formatMKD(deal.discount_price_mkd)}</span>
+                            <span class="original-price">${formatMKD(deal.original_price_mkd)}</span>
+                            <span class="discount-pill">-${deal.discount_percentage}%</span>
+                        </div>
+                        <div class="deal-actions">
+                            <button class="btn-primary">Земи Понуда</button>
+                            <button class="btn-secondary">♥</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterDeals(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
+            document.querySelector(`[data-cat="${category}"]`).classList.add('active');
+            
+            const filtered = category === 'all' 
+                ? DEALS_DATA 
+                : DEALS_DATA.filter(d => d.category === category);
+            renderDeals(filtered);
+        }
+
+        function showScreen(screen) {
+            // Hide all screens
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('qr-screen').classList.add('hidden');
+            document.getElementById('profile-screen').classList.add('hidden');
+            
+            // Show selected
+            document.getElementById(screen + '-screen').classList.remove('hidden');
+            
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            if (screen === 'profile') {
+                renderProfile();
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function hideLogin(e) {
+            if (e.target === e.currentTarget) {
+                document.getElementById('login-modal').classList.add('hidden');
+            }
+        }
+
+        function toggleAuth() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('modalTitle').textContent = isLoginMode ? 'Најави се' : 'Регистрирај се';
+            document.getElementById('authBtn').textContent = isLoginMode ? 'Најави се' : 'Регистрирај се';
+            document.getElementById('authSwitch').textContent = isLoginMode ? 'Немаш сметка? Регистрирај се' : 'Веќе имаш сметка? Најави се';
+            document.getElementById('register-fields').classList.toggle('hidden', isLoginMode);
+        }
+
+        function handleAuth() {
+            // Simulate auth
+            const name = document.getElementById('regName')?.value || 'Јован Јовановски';
+            currentUser = {
+                full_name: name,
+                email: document.getElementById('loginEmail').value,
+                qr_code: 'MKBF-' + Math.random().toString(36).substring(2, 14).toUpperCase()
+            };
+            
+            document.getElementById('login-modal').classList.add('hidden');
+            document.querySelector('.login-btn').textContent = '👤 ' + currentUser.full_name.split(' ')[0];
+            
+            // Show QR section
+            document.getElementById('user-qr-section').classList.remove('hidden');
+            document.getElementById('user-qr-code').textContent = currentUser.qr_code;
+            
+            alert('Успешно најавен!');
+        }
+
+        function renderProfile() {
+            const content = document.getElementById('profile-content');
+            if (!currentUser) {
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <div style="font-size: 64px; margin-bottom: 16px;">👤</div>
+                        <div style="color: #9CA3AF; font-size: 18px; margin-bottom: 24px;">Не си најавен</div>
+                        <button class="btn-primary" onclick="showLogin()">Најави се</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            content.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="width: 80px; height: 80px; background: #DC2626; border-radius: 40px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px; font-weight: bold;">
+                        ${currentUser.full_name.split(' ').map(n => n[0]).join('')}
+                    </div>
+                    <div style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">${currentUser.full_name}</div>
+                    <div style="color: #9CA3AF; font-size: 14px; margin-bottom: 4px;">${currentUser.email}</div>
+                    <div style="color: #6B7280; font-size: 14px;">📍 Скопје</div>
+                </div>
+                
+                <div style="background: #1F2937; border-radius: 16px; padding: 20px; margin: 20px 0; border: 1px solid #374151;">
+                    <div style="color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 16px; text-align: center;">Твој Членски QR Код</div>
+                    <div style="background: #fff; padding: 16px; border-radius: 12px; text-align: center; margin-bottom: 12px;">
+                        <div style="color: #000; font-family: monospace; font-size: 18px; font-weight: bold;">${currentUser.qr_code}</div>
+                    </div>
+                    <div style="color: #9CA3AF; font-size: 12px; text-align: center;">Прикажи го овој код во продавница за попуст</div>
+                </div>
+                
+                <div style="display: flex; gap: 12px; margin: 20px 0;">
+                    <div style="flex: 1; background: #1F2937; border-radius: 12px; padding: 16px; text-align: center; border: 1px solid #374151;">
+                        <div style="font-size: 20px; font-weight: 700; color: #fff;">12</div>
+                        <div style="font-size: 12px; color: #9CA3AF;">Зачувани</div>
+                    </div>
+                    <div style="flex: 1; background: #1F2937; border-radius: 12px; padding: 16px; text-align: center; border: 1px solid #374151;">
+                        <div style="font-size: 20px; font-weight: 700; color: #fff;">5</div>
+                        <div style="font-size: 12px; color: #9CA3AF;">Искористени</div>
+                    </div>
+                    <div style="flex: 1; background: #1F2937; border-radius: 12px; padding: 16px; text-align: center; border: 1px solid #374151;">
+                        <div style="font-size: 20px; font-weight: 700; color: #fff;">8,450</div>
+                        <div style="font-size: 12px; color: #9CA3AF;">Заштеда</div>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" onclick="logout()">Одјави се</button>
+            `;
+        }
+
+        function logout() {
+            currentUser = null;
+            document.querySelector('.login-btn').textContent = 'Најави се';
+            document.getElementById('user-qr-section').classList.add('hidden');
+            showScreen('home');
+            document.querySelector('.nav-item').click();
+        }
+
+        // Category click handlers
+        document.querySelectorAll('.category').forEach(cat => {
+            cat.addEventListener('click', () => filterDeals(cat.dataset.cat));
+        });
+
+        // Search handler
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = DEALS_DATA.filter(d => 
+                d.title.toLowerCase().includes(query) || 
+                d.store.toLowerCase().includes(query)
+            );
+            renderDeals(filtered);
+        });
+
+        // Initial render
+        renderDeals(DEALS_DATA);
+    </script>
+</body>
+</html>
