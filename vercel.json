@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "mk-black-friday-radar",
+  "builds": [
+    {
+      "src": "frontend/dist/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}
